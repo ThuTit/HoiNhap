@@ -28,29 +28,15 @@ class LoginTest extends DuskTestCase
         });
     }
      
-     public function test_user_can_login_with_valid_credentials()
-    {
-       $user = factory(App\User::class)->create([
-             'email' => 'linh.dt@teko.vn',
-            'password' => hash("sha256",'QC123456'),
-           
-        ]);
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/login')
-                    ->type('email','linh.dt@teko.vn')
-                    ->type('password','QC123456')
-                    ->press('Đăng nhập')
-                    ->assertSee('Email hoặc Mật khẩu không hợp lệ.');
-        });
-    }
+     
     
     public function test_password_is_wrong()
     {   
         
         $this->browse(function (Browser $browser)  {
             $browser->visit('/login')
-                    ->type('email','cesar123@test.com')
-                    ->type('password','QC123456')
+                    ->type('email','linh.dt@teko.vn')
+                    ->type('password','QC123')
                     ->press('Đăng nhập')
                     ->assertSee('Email hoặc Mật khẩu không hợp lệ.');
         });
@@ -70,7 +56,7 @@ class LoginTest extends DuskTestCase
    {
         $this->browse(function (Browser $browser)  {
             $browser->visit('/login')
-                    ->type('email','cesar123@test.com')
+                    ->type('email','')
                     ->type('password','QC1236')
                     ->press('Đăng nhập')
                     ->assertPathIs('/login');
@@ -81,7 +67,7 @@ class LoginTest extends DuskTestCase
         $this->browse(function (Browser $browser)  {
             $browser->visit('/login')
                     ->type('email','cesar123@test.com')
-                    ->type('password','QC1236')
+                    ->type('password','')
                     ->press('Đăng nhập')
                     ->assertPathIs('/login');
         });
@@ -90,32 +76,32 @@ class LoginTest extends DuskTestCase
    {
         $this->browse(function (Browser $browser)  {
             $browser->visit('/login')
-                    ->type('email','cesar123@test.com')
-                    ->type('password','QC1236')
+                    ->type('email','')
+                    ->type('password','')
                     ->press('Đăng nhập')
                     ->assertPathIs('/login');
         });
    }
-   public function test_email_is_blank_first()
-   {
-        $this->browse(function (Browser $browser)  {
-            $browser->visit('/login')
-                    ->type('email',' cesar123@test.com')
-                    ->type('password','QC1236')
-                    ->press('Đăng nhập')
-                    ->assertSee('Email hoặc Mật khẩu không hợp lệ.');
-        });
-   }
-   public function test_email_is_blank_end()
-   {
-        $this->browse(function (Browser $browser)  {
-            $browser->visit('/login')
-                    ->type('email','cesar123@test.com ')
-                    ->type('password','QC1236')
-                    ->press('Đăng nhập')
-                    ->assertSee('Email hoặc Mật khẩu không hợp lệ.');
-        });
-   }
+   // public function test_email_is_blank_first()
+   // {
+   //      $this->browse(function (Browser $browser)  {
+   //          $browser->visit('/login')
+   //                  ->type('email',' cesar123@test.com')
+   //                  ->type('password','QC1236')
+   //                  ->press('Đăng nhập')
+   //                  ->assertSee('Email hoặc Mật khẩu không hợp lệ.');
+   //      });
+   // }
+   // public function test_email_is_blank_end()
+   // {
+   //      $this->browse(function (Browser $browser)  {
+   //          $browser->visit('/login')
+   //                  ->type('email','cesar123@test.com ')
+   //                  ->type('password','QC1236')
+   //                  ->press('Đăng nhập')
+   //                  ->assertSee('Email hoặc Mật khẩu không hợp lệ.');
+   //      });
+   // }
    public function test_format_email_is_wrong()
    {
         $this->browse(function (Browser $browser)  {
@@ -126,7 +112,22 @@ class LoginTest extends DuskTestCase
                     ->assertPathIs('/login');
         });
    }
-
+   public function test_user_can_login_with_valid_credentials()
+    {
+       $user = factory(User::class)->create([
+             'email' => 'nam.vh@teko.vn',
+            'password' => bcrypt('QC123456'),
+           
+        ]);
+        $this->browse(function (Browser $browser)   {
+            $browser->visit('/login')
+                    ->type('email','nam.vh@teko.vn')
+                    ->type('password','QC123456')
+                    ->press('Đăng nhập')
+                    ->assertPathIs('/home');
+                    
+        });
+    }
     
     
 }
